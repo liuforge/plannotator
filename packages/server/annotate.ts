@@ -27,7 +27,8 @@ import {
 } from "@plannotator/shared/source-save-node";
 import { createExternalAnnotationHandler } from "./external-annotations";
 import { saveConfig, detectGitUser, getServerConfig } from "./config";
-import { dirname, isAbsolute, relative, resolve as resolvePath } from "path";
+import { dirname, resolve as resolvePath } from "path";
+import { isWithinDirectory } from "@plannotator/shared/html-assets-node";
 import { isWSL } from "./browser";
 import { AI_QUERY_ENDPOINT, createAIRuntime } from "./ai-runtime";
 import type { AIEndpoints } from "@plannotator/ai";
@@ -565,11 +566,4 @@ export async function startAnnotateServer(
       server.stop();
     },
   };
-}
-
-function isWithinDirectory(filePath: string, root: string): boolean {
-  const resolved = resolvePath(filePath);
-  const resolvedRoot = resolvePath(root);
-  const rel = relative(resolvedRoot, resolved);
-  return rel === "" || (!!rel && !rel.startsWith("..") && !isAbsolute(rel));
 }
